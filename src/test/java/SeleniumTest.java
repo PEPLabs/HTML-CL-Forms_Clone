@@ -38,23 +38,48 @@ public class SeleniumTest {
         webDriver.quit();
     }
 
-    @Test
-    public void testRegistrationForm() {
-        webDriver.findElement(By.id("name")).sendKeys("John Doe");
-        webDriver.findElement(By.id("email")).sendKeys("john@example.com");
-        webDriver.findElement(By.id("password")).sendKeys("password123");
+    // @Test
+    // public void testRegistrationForm() {
+    //     webDriver.findElement(By.id("name")).sendKeys("John Doe");
+    //     webDriver.findElement(By.id("email")).sendKeys("john@example.com");
+    //     webDriver.findElement(By.id("password")).sendKeys("password123");
 
-        Select genderSelect = new Select(webDriver.findElement(By.id("gender")));
-        genderSelect.selectByValue("male");
+    //     Select genderSelect = new Select(webDriver.findElement(By.id("gender")));
+    //     genderSelect.selectByValue("male");
 
-        webDriver.findElement(By.id("birthdate")).sendKeys("1990-01-01");
-        webDriver.findElement(By.id("terms")).click();
-        webDriver.findElement(By.xpath("//button[text()='Register']")).click();
+    //     webDriver.findElement(By.id("birthdate")).sendKeys("1990-01-01");
+    //     webDriver.findElement(By.id("terms")).click();
+    //     webDriver.findElement(By.xpath("//button[text()='Register']")).click();
 
-        String successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".success-message"))).getText();
-        assertEquals("Registration successful!", successMessage);
-    }
+    //     String successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".success-message"))).getText();
+    //     assertEquals("Registration successful!", successMessage);
+    // }
+ @Test
+public void testRegistrationForm() {
+    WebElement nameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
+    nameInput.sendKeys("John Doe");
 
+    WebElement emailInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
+    emailInput.sendKeys("john@example.com");
+
+    WebElement passwordInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));
+    passwordInput.sendKeys("password123");
+
+    Select genderSelect = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("gender"))));
+    genderSelect.selectByValue("male");
+
+    WebElement birthdateInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("birthdate")));
+    birthdateInput.sendKeys("1990-01-01");
+
+    WebElement termsCheckbox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("terms")));
+    termsCheckbox.click();
+
+    WebElement registerButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Register']")));
+    registerButton.click();
+
+    WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".success-message")));
+    assertEquals("Registration successful!", successMessage.getText());
+}
     @Test
     public void testLoginForm() {
         webDriver.findElement(By.id("loginEmail")).sendKeys("user@example.com");
@@ -104,7 +129,8 @@ public class SeleniumTest {
     @Test
     public void testGenderSelect() {
         Select genderSelect = new Select(webDriver.findElement(By.id("gender")));
-
+ wait.until(ExpectedConditions.elementToBeClickable(genderSelect.getWrappedElement()));
+         genderSelect.selectByValue("male");
         assertEquals("Male", genderSelect.getFirstSelectedOption().getText());
 
         genderSelect.selectByValue("female");
